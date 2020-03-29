@@ -1,9 +1,10 @@
 import React from 'react';
+import Header from './components/Header';
 
 function App() {
   return (
     <div>
-      <h1>Clima React</h1>
+      <Header title="Clima React App" />
     </div>
   );
 }
