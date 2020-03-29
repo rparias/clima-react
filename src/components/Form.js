@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 
-function Form() {
-  const [search, updateSearch] = useState({
-    city: '',
-    country: ''
-  });
+function Form({ search, updateSearch, updateIsReadyForCallApi }) {
   const [error, updateError] = useState(false);
 
   const { city, country } = search;
@@ -21,6 +17,7 @@ function Form() {
     if (hasErrorData()) {
       return;
     }
+    updateIsReadyForCallApi(true);
   };
 
   const hasErrorData = () => {
