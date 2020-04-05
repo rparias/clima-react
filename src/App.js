@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Form from './components/Form';
 import { API_RP } from './constants/constants';
 import Weather from './components/Weather';
+import Error from './components/Error';
 
 function App() {
   const [search, updateSearch] = useState({
@@ -12,6 +13,7 @@ function App() {
 
   const [isReadyForCallApi, updateIsReadyForCallApi] = useState(false);
   const [responseAPI, updateResponseAPI] = useState({});
+  const [error, updateError] = useState(false);
 
   const { city, country } = search;
 
@@ -22,8 +24,24 @@ function App() {
       const result = await response.json();
       updateResponseAPI(result);
       updateIsReadyForCallApi(false);
+      verifyResult(result);
     }
   };
+
+  const verifyResult = result => {
+    if (result.cod === '404') {
+      updateError(true);
+    } else {
+      updateError(false);
+    }
+  };
+
+  let component;
+  if (error) {
+    component = <Error message="No hay resultados" />;
+  } else {
+    component = <Weather responseAPI={responseAPI} />;
+  }
 
   useEffect(() => {
     callWeatherAPI();
@@ -42,9 +60,7 @@ function App() {
                 updateIsReadyForCallApi={updateIsReadyForCallApi}
               />
             </div>
-            <div className="col m6 s12">
-              <Weather responseAPI={responseAPI} />
-            </div>
+            <div className="col m6 s12">{component}</div>
           </div>
         </div>
       </div>
